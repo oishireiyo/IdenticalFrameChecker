@@ -1,9 +1,10 @@
 import React from 'react'
 import Button from '@mui/material/Button'
 import FileUploadIcon from '@mui/icons-material/FileUpload'
+import Axios from 'axios'
 
 export default function FileUploader(props) {
-  const {setFile} = props
+  const {kind, setVideo} = props
 
   const inputRef = React.useRef(null)
 
@@ -12,12 +13,26 @@ export default function FileUploader(props) {
     inputRef.current.click()
   }
 
-  function handleChangeFile(event) {
+  async function handleChangeFile(event) {
     const files = event.target.files
     if (files[0]) {
-      console.log(files[0])
-      setFile(files[0])
+      setVideo(files[0])
     }
+
+    const formData = new FormData()
+    formData.append('video', files[0])
+
+    await Axios.post(`http://127.0.0.1:5000/set_${kind}_video`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    })
+    .then(function(response) {
+      console.log(response)
+    })
+    .catch(function(error) {
+      console.log(error)
+    })
   }
 
   return (

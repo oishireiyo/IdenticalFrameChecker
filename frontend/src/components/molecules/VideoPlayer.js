@@ -3,7 +3,7 @@ import PlayPauseButtons from '../atoms/PlayPayseButtons'
 import Seekbar from '../atoms/Seekbar'
 
 export default function VideoPlayer(props) {
-  const {file, videoRef} = props
+  const {video, videoRef} = props
 
   const [videourl, setVideourl] = React.useState(null)
   const [isPlaying, setIsPlaying] = React.useState(false)
@@ -39,9 +39,9 @@ export default function VideoPlayer(props) {
   }, [isPlaying])
 
   React.useEffect(function() {
-    const videourl = URL.createObjectURL(new Blob([file], {file: "video/mp4"}))
+    const videourl = URL.createObjectURL(new Blob([video], {file: "video/mp4"}))
     setVideourl(videourl)
-  }, [file])
+  }, [video])
 
   return (
     <div className=''>
@@ -54,12 +54,12 @@ export default function VideoPlayer(props) {
         onLoadedMetadata={handleLoadedMetadata}
       />
       <PlayPauseButtons
-        file={file}
+        file={video}
         isPlaying={isPlaying}
         handlePlayPause={handlePlayPause}
       />
       <Seekbar
-        file={file}
+        file={video}
         currentInSec={currentInSec}
         handleSeekbarValue={handleSeekbarValue}
         durationInSec={durationInSec}
