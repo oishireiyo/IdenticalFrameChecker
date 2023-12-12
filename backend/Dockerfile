@@ -1,4 +1,4 @@
-FROM ubuntu：latest
+FROM ubuntu:latest
 
 # Docker build時に使用する変数
 ARG EXPOSED_PORT=5432
