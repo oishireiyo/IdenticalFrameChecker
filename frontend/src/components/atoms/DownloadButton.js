@@ -7,22 +7,13 @@ export default function DownloadButton(props) {
   const {done, fileName} = props
 
   async function handleClick() {
-    // 実行結果を出力ファイルにダンプする
-    await Axios.get('/generate_output_file')
-    .then(function(response) {
-      console.log(response)
-    })
-    .catch(function(error) {
-      console.error(error)
-    })
-
     // ファイルのダウンロード
-    await Axios.get('/get_generated_output_file')
+    await Axios.post('/generate_output_file', {'as_str': true})
     .then(function(response) {
       console.log(response)
 
       // Step 1: create the blob object with the text
-      const blob = new Blob([response.data], {type: "text/plain"})
+      const blob = new Blob([response.data.str], {type: "text/plain"})
 
       // Step 2: create blob object url
       const url = URL.createObjectURL(blob)
