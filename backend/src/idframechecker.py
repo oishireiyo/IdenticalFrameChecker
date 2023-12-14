@@ -74,7 +74,8 @@ class IdenticalFramesChecker(object):
 
   def get_all_frames(self, video):
     frames = []
-    for i in range(int(video.get(cv2.CAP_PROP_FRAME_COUNT))):
+    logger.info('Read all frames from source video')
+    for i in tqdm.tqdm(range(int(video.get(cv2.CAP_PROP_FRAME_COUNT)))):
       frame = self.get_single_frame(video=video, iframe=i)
       frames.append(frame)
 
@@ -173,7 +174,8 @@ class IdenticalFramesChecker(object):
 
     # Dump
     os.makedirs('/'.join(output_file_name.split('/')[:-1]), exist_ok=True)
-    with open(output_file_name, 'w') as f:
+    if os.path.exists(output_file_name): os.remove(output_file_name)
+    with open(output_file_name, mode='w') as f:
       f.write(str)
 
   def release_all(self, videos: list):

@@ -1,7 +1,7 @@
 import os
 import sys
 from flask import Flask
-from flask import request, make_response, jsonify
+from flask import request, make_response, jsonify, send_file
 from flask_cors import CORS
 
 app = Flask(__name__, static_folder='', template_folder='')
@@ -107,6 +107,20 @@ def execute():
   response = {'result': True, 'list_source_frame_ids': list_source_frame_ids}
 
   return make_response(jsonify(response))
+
+@app.route('/generate_output_file', methods=['POST'])
+def generate_output_file():
+  checker.generate_output_file(output_file_name='../output/output_file_name.py')
+  response = {'result': True}
+
+  return make_response(jsonify(response))
+
+@app.route('/get_generated_output_file', methods=['GET'])
+def get_generated_output_file():
+  filepath = '../output/output_file_name.py'
+  filename = os.path.basename(filepath)
+
+  return send_file(filepath, as_attachment=True, download_name=filename, mimetype='text/plain')
 
 if __name__ == '__main__':
   app.debug = True
