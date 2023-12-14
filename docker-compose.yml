@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    container_name: frontend
+    environment:
+      EXPOSED_PORT: 3210
+    ports:
+      - 3210:3210
+    networks:
+      application:
+        aliases:
+          - "frontend.local"
+
+  backend:
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    container_name: backend
+    environment:
+      EXPOSED_PORT: 5432
+    ports:
+      - 5432:5432
+    networks:
+      application:
+        aliases:
+          - "backend.local"
+
+networks:
+  application:
+    driver: bridge
