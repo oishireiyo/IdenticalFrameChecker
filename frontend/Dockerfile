@@ -38,6 +38,6 @@ EXPOSE ${EXPOSED_PORT}
 # 開発サーバーを使用する場合。
 # 全てのネットワークからのアクセスを受け入れるため、HOSTを0.0.0.0に設定する。
 # ポート番号はEXPOSEしたものと同一にする。
-CMD ./node_modules/.bin/webpack serve --open --host=0.0.0.0 --port=${EXPOSED_PORT}
+# CMD ./node_modules/.bin/webpack serve --open --host=0.0.0.0 --port=${EXPOSED_PORT}
 # Nginxを利用する場合。
-# CMD ./node_modules/.bin/webpack .
+CMD ./node_modules/.bin/webpack .
