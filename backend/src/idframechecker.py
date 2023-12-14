@@ -1,4 +1,3 @@
-# source ~/venv/stillphoto_slim/bin/activate
 # Standard modules
 import os
 import sys
@@ -139,19 +138,19 @@ class IdenticalFramesChecker(object):
 
       return source_frame_ids
 
-  def execute(self) -> list[int]:
+  def execute(self) -> list[list[int]]:
     source_frames = self.get_all_frames(video=self.source_video)
-    prev_first_source_frame_id = None
+    prev_first_source_frame_id = 0
 
     self.list_source_frame_ids = []
-    for i in tqdm.tqdm(range(int(self.target_video.get(cv2.CAP_PROP_FRAME_COUNT)))):
-    # for i in tqdm.tqdm(range(0, 10)):
+    for i in tqdm.tqdm(range(336, int(self.target_video.get(cv2.CAP_PROP_FRAME_COUNT)))):
       target_frame = self.get_single_frame(video=self.target_video, iframe=i)
       source_frame_ids = self.compare_frame(
         source_frames=source_frames,
         target_frame=target_frame,
-        prev_first_source_frame_id=0 if prev_first_source_frame_id is None else prev_first_source_frame_id)
-      prev_first_source_frame_id = source_frame_ids[-1] if len(source_frame_ids) > 0 else None
+        prev_first_source_frame_id=prev_first_source_frame_id)
+      if len(source_frame_ids) > 0:
+        prev_first_source_frame_id = source_frame_ids[-1]
       self.list_source_frame_ids.append(source_frame_ids)
 
     return self.list_source_frame_ids
@@ -193,8 +192,8 @@ class IdenticalFramesChecker(object):
 if __name__ == '__main__':
   start_time = time.time()
 
-  source_name = '../api/temp_source_video.mp4'
-  target_name = '../api/temp_source_video.mp4'
+  source_name = '../samples/JB-BAN-2304-0139_endroll.mp4'
+  target_name = '../samples/JB-BAN-2304-0139_midroll.mp4'
 
   obj = IdenticalFramesChecker()
   obj.set_source_name(source_name=source_name)
@@ -203,7 +202,7 @@ if __name__ == '__main__':
   obj.set_target_video()
   obj.set_config(config='first')
   _ = obj.execute()
-  obj.generate_output_file()
+  # obj.generate_output_file()
 
   end_time = time.time()
   logger.info('Duration: %.3f' % (end_time - start_time))

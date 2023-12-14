@@ -108,7 +108,7 @@ def execute():
 
   return make_response(jsonify(response))
 
-@app.route('/generate_output_file', methods=['POST'])
+@app.route('/generate_output_file', methods=['GET'])
 def generate_output_file():
   checker.generate_output_file()
   response = {'result': True}

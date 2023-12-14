@@ -161,5 +161,9 @@ cython_debug/
 
 # User defined
 *.mp4
+*.png
+*.jpg
+*.jpeg
 **/node_modules/
 /backend/output/*
+/backend/samples/*

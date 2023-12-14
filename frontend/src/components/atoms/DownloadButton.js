@@ -8,7 +8,7 @@ export default function DownloadButton(props) {
 
   async function handleClick() {
     // 実行結果を出力ファイルにダンプする
-    await Axios.post('/generate_output_file', {'output_file_name': 'output.py'})
+    await Axios.get('/generate_output_file')
     .then(function(response) {
       console.log(response)
     })
