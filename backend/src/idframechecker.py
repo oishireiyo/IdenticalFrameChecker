@@ -35,6 +35,7 @@ class IdenticalFramesChecker(object):
     self.target_video = None
     self.config = config
     self.list_source_frame_ids = []
+    self.output_file_name = '../output/output_file_name.py'
 
   # Set attributes
   def set_source_name(self, source_name) -> None:
@@ -61,6 +62,9 @@ class IdenticalFramesChecker(object):
       'height': video.get(cv2.CAP_PROP_FRAME_HEIGHT),
       'fps': video.get(cv2.CAP_PROP_FPS),
     }
+
+  def get_output_file_name(self):
+    return self.output_file_name
 
   # Get some frames
   def get_single_frame(self, video, iframe: int) -> Union[np.ndarray, None]:
@@ -138,6 +142,8 @@ class IdenticalFramesChecker(object):
   def execute(self) -> list[int]:
     source_frames = self.get_all_frames(video=self.source_video)
     prev_first_source_frame_id = None
+
+    self.list_source_frame_ids = []
     for i in tqdm.tqdm(range(int(self.target_video.get(cv2.CAP_PROP_FRAME_COUNT)))):
     # for i in tqdm.tqdm(range(0, 10)):
       target_frame = self.get_single_frame(video=self.target_video, iframe=i)
@@ -151,6 +157,8 @@ class IdenticalFramesChecker(object):
     return self.list_source_frame_ids
 
   def generate_output_file(self, output_file_name='../output/output_file_name.py') -> None:
+    self.output_file_name = output_file_name
+
     # 対して重要でない部分
     str =  f'# This is auto-generated file by {__file__}.\n'
     str += f'# Return frame numbers of the source video that match the target video frame.\n'

@@ -110,14 +110,14 @@ def execute():
 
 @app.route('/generate_output_file', methods=['POST'])
 def generate_output_file():
-  checker.generate_output_file(output_file_name='../output/output_file_name.py')
+  checker.generate_output_file()
   response = {'result': True}
 
   return make_response(jsonify(response))
 
 @app.route('/get_generated_output_file', methods=['GET'])
 def get_generated_output_file():
-  filepath = '../output/output_file_name.py'
+  filepath = checker.get_output_file_name()
   filename = os.path.basename(filepath)
 
   return send_file(filepath, as_attachment=True, download_name=filename, mimetype='text/plain')
