@@ -7,7 +7,7 @@ import Alert from "@mui/material/Alert"
 export default function LeftSidebar(props) {
   const {sourceVideo, targetVideo} = props
 
-  const {done, setDone} = React.useState(false)
+  const [done, setDone] = React.useState(false)
 
   return (
     <div className="flex-col space-y-4">
