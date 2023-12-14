@@ -42,4 +42,5 @@ EXPOSE ${EXPOSED_PORT}
 # コンテナ内部実行されるため、環境変数(ENV)に設定した変数しか使えないため、EXPOSED_PORTをENVに設定する必要あり。
 # 全てのネットワークからのアクセスを受け入れるため、HOSTを0.0.0.0に設定する。
 # ポート番号はEXPOSEしたものと同一にする。
-CMD python3 api/server.py --host=0.0.0.0 --port=${EXPOSED_PORT}
+# CMD python3 api/server.py --host=0.0.0.0 --port=${EXPOSED_PORT}
+CMD gunicorn --config api/gunicorn/setting.py
