@@ -16,7 +16,7 @@ npm -g install n
 n stable
 apt-get purge nodejs npm
 ```
-その後に、必要なパッケージをインストールし、完了後開発サーバーを立てます。
+その後に、必要なパッケージをインストールし、完了後開発サーバーを立て、[`http://127.0.0.1:3210`](http://127.0.0.1:3210)から利用可能です。
 ```bash
 cd path/to/frontend
 npm ci
@@ -27,8 +27,10 @@ npm run dev
 pythonの設定を行い、完了後開発サーバーを立てます。
 ```
 cd path/to/backend
-
+python3 -m pip install -r requirements.txt
+python3 api/server.py
 ```
+以上のステップが完了したら、[`http://127.0.0.1:5432`](http://127.0.0.1:5432)からアプリケーションを利用できます。
 
 ## このRepositoryを使用したい
 `docker-compose.yml`を利用し、`backend/Dockerfile`、`frontend/Dockerfile`と`nginx/Dockerfile`からイメージ、コンテナを作成します。
