@@ -143,7 +143,7 @@ class IdenticalFramesChecker(object):
     prev_first_source_frame_id = 0
 
     self.list_source_frame_ids = []
-    for i in tqdm.tqdm(range(336, int(self.target_video.get(cv2.CAP_PROP_FRAME_COUNT)))):
+    for i in tqdm.tqdm(range(int(self.target_video.get(cv2.CAP_PROP_FRAME_COUNT)))):
       target_frame = self.get_single_frame(video=self.target_video, iframe=i)
       source_frame_ids = self.compare_frame(
         source_frames=source_frames,
@@ -155,7 +155,7 @@ class IdenticalFramesChecker(object):
 
     return self.list_source_frame_ids
 
-  def generate_output_file(self, output_file_name='../output/output_file_name.py') -> None:
+  def generate_output_file(self, as_str: bool=False, output_file_name: str='../output/output_file_name.py') -> Union[str, None]:
     self.output_file_name = output_file_name
 
     # 対して重要でない部分
@@ -180,10 +180,13 @@ class IdenticalFramesChecker(object):
     str += '}\n'
 
     # Dump
-    os.makedirs('/'.join(output_file_name.split('/')[:-1]), exist_ok=True)
-    if os.path.exists(output_file_name): os.remove(output_file_name)
-    with open(output_file_name, mode='w') as f:
-      f.write(str)
+    if as_str:
+      return str
+    else:
+      os.makedirs('/'.join(output_file_name.split('/')[:-1]), exist_ok=True)
+      if os.path.exists(output_file_name): os.remove(output_file_name)
+      with open(output_file_name, mode='w') as f:
+        f.write(str)
 
   def release_all(self, videos: list):
     self.source_video.release()
