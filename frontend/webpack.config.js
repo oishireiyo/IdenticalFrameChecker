@@ -1,10 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TailwindCSS = require('tailwindcss')
 const path = require('path')
-const webpack = require('webpack')
-const dotenv = require('dotenv')
-
-const env = dotenv.config('./.env.public').parsed
 
 module.exports = {
   mode: 'development',
@@ -87,10 +83,6 @@ module.exports = {
       filename: 'index.html',
       template: path.join(__dirname, 'src', 'index.html'),
       favicon: path.join(__dirname, 'assets', 'favicon.ico'),
-    }),
-    // .envから読み込んだ変数を使用するため。
-    new webpack.DefinePlugin({
-      'process.env': JSON.stringify(env),
     }),
   ],
 }
