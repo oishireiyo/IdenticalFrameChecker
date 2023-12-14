@@ -10,6 +10,8 @@ services:
       EXPOSED_PORT: 3210
     ports:
       - 3210:3210
+    volumes:
+      - ./frontend/dist:/frontend/dist:rw
     networks:
       application:
         aliases:
@@ -28,6 +30,18 @@ services:
       application:
         aliases:
           - "backend.local"
+
+  nginx:
+    build:
+      context: ./nginx/
+      dockerfile: Dockerfile
+    container_name: nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html:ro
+    depends_on:
+      - frontend
 
 networks:
   application:
