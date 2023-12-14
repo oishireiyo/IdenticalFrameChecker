@@ -4,9 +4,13 @@ import CallButton from "../atoms/CallButton"
 import DownloadFile from "../molecules/DownloadFile"
 import Alert from "@mui/material/Alert"
 
-export default function LeftSidebar() {
+export default function LeftSidebar(props) {
+  const {sourceVideo, targetVideo} = props
+
+  const {done, setDone} = React.useState(false)
+
   return (
-    <div className="flex-col space-y-2">
+    <div className="flex-col space-y-4">
       <div>
         <Alert security="info">処理の設定と結果の取得。</Alert>
       </div>
@@ -14,10 +18,14 @@ export default function LeftSidebar() {
         <ConfigRadio />
       </div>
       <div>
-        <CallButton />
+        <CallButton
+          sourceVideo={sourceVideo}
+          targetVideo={targetVideo}
+          setDone={setDone}
+        />
       </div>
       <div>
-        <DownloadFile />
+        <DownloadFile done={done}/>
       </div>
     </div>
   )

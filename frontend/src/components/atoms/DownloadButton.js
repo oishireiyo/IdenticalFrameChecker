@@ -1,9 +1,10 @@
 import React from 'react'
 import Button from '@mui/material/Button'
 import Axios from 'axios'
+import DownloadIcon from '@mui/icons-material/Download';
 
 export default function DownloadButton(props) {
-  const {fileName} = props
+  const {done, fileName} = props
 
   async function handleClick() {
     // 実行結果を出力ファイルにダンプする
@@ -21,7 +22,7 @@ export default function DownloadButton(props) {
       console.log(response)
 
       // Step 1: create the blob object with the text
-      const blob = new Blob([response.data], {type: response.headers.content-type})
+      const blob = new Blob([response.data], {type: "text/plain"})
 
       // Step 2: create blob object url
       const url = URL.createObjectURL(blob)
@@ -41,7 +42,13 @@ export default function DownloadButton(props) {
   }
 
   return (
-    <Button color='primary' variant='contained' onClick={handleClick}>
+    <Button
+      color='primary'
+      variant='contained'
+      disabled={!done}
+      onClick={handleClick}
+      startIcon={<DownloadIcon />}
+    >
       処理結果の取得
     </Button>
   )

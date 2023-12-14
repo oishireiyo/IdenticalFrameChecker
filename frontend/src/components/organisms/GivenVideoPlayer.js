@@ -6,9 +6,9 @@ import GetVideoInfoButton from '../atoms/GetVideoInfoButton'
 import VideoInfoCard from '../atoms/VideoInfoCard'
 
 export default function GivenVideoPlayer(props) {
-  const {kind, alerttext} = props
+  const {kind, alerttext, video, setVideo} = props
 
-  const [video, setVideo] = React.useState(null)
+  // const [video, setVideo] = React.useState(null)
   const [videoinfo, setVideoinfo] = React.useState({})
 
   const videoRef = React.useRef(null)

@@ -12,7 +12,7 @@ export default function DownloadFileName(props) {
     <TextField
       color='primary'
       variant='outlined'
-      label='ダウンロードファイル名の指定 (.pyを忘れずに)'
+      label='ダウンロードファイル名の指定'
       defaultValue={fileName}
       fullWidth
       onChange={handleChange}
