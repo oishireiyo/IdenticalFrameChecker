@@ -21,9 +21,9 @@ stream_handler.setFormatter(handler_format)
 logger.addHandler(stream_handler)
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../src/')
-from idframechecker import IdenticalFramesChecker
+from timecode_coincident import TimeCodeCoincident
 
-checker = IdenticalFramesChecker()
+coincidenter = TimeCodeCoincident()
 
 def axios_video_to_videocapture(video_file, temp_filename='temp_video.mp4'):
   # Convert the uploaded file to a cv2 video capture
@@ -46,7 +46,7 @@ def index():
 @app.route('/set_source_name', methods=['POST'])
 def set_source_name():
   arguments = request.get_json()
-  checker.set_source_name(source_name=arguments['source_name'])
+  coincidenter.set_source_name(source_name=arguments['source_name'])
   response = {'result': True}
 
   return make_response(jsonify(response))
@@ -54,7 +54,7 @@ def set_source_name():
 @app.route('/set_target_name', methods=['POST'])
 def set_target_name():
   arguments = request.get_json()
-  checker.set_target_name(target_name=arguments['target_name'])
+  coincidenter.set_target_name(target_name=arguments['target_name'])
   response = {'result': True}
 
   return make_response(jsonify(response))
@@ -65,7 +65,7 @@ def set_source_video():
     video_file=request.files['video'],
     temp_filename='temp_source_video.mp4',
   )
-  checker.set_source_video(source_video=source_video)
+  coincidenter.set_source_video(source_video=source_video)
   response = {'result': True}
 
   return make_response(jsonify(response))
@@ -76,28 +76,28 @@ def set_target_video():
     video_file=request.files['video'],
     temp_filename='temp_target_video.mp4',
   )
-  checker.set_target_video(target_video=target_video)
+  coincidenter.set_target_video(target_video=target_video)
   response = {'result': True}
 
   return make_response(jsonify(response))
 
 @app.route('/set_config/<config>', methods=['GET'])
 def set_config(config: str):
-  checker.set_config(config=config)
+  coincidenter.set_config(config=config)
   response = {'result': True}
 
   return make_response(jsonify(response))
 
 @app.route('/get_video_information/<videokind>', methods=['GET'])
 def get_video_information(videokind: str):
-  information = checker.get_video_information(videokind=videokind)
+  information = coincidenter.get_video_information(videokind=videokind)
   response = {'result': True, 'information': information}
 
   return make_response(jsonify(response))
 
 @app.route('/execute', methods=['GET'])
 def execute():
-  list_source_frame_ids = checker.execute()
+  list_source_frame_ids = coincidenter.execute()
   response = {'result': True, 'list_source_frame_ids': list_source_frame_ids}
 
   return make_response(jsonify(response))
@@ -105,14 +105,14 @@ def execute():
 @app.route('/generate_output_file', methods=['POST'])
 def generate_output_file():
   arguments = request.get_json()
-  str = checker.generate_output_file(as_str=arguments['as_str'])
+  str = coincidenter.generate_output_file(as_str=arguments['as_str'])
   response = {'result': True, 'str': str}
 
   return make_response(jsonify(response))
 
 @app.route('/get_generated_output_file', methods=['GET'])
 def get_generated_output_file():
-  filepath = checker.get_output_file_name()
+  filepath = coincidenter.get_output_file_name()
   filename = os.path.basename(filepath)
 
   return send_file(filepath, as_attachment=True, download_name=filename, mimetype='text/plain')

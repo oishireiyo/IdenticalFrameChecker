@@ -19,7 +19,7 @@ logger.addHandler(stream_handler)
 import numpy as np
 import cv2
 
-class IdenticalFramesChecker(object):
+class TimeCodeCoincident(object):
   '''
   sourceのフレームの中からtargetと一致するものをフレーム番号の配列として返す。
   字幕自動生成アプリケーションにおいて、動画間の差分を検出する目的で使用。
