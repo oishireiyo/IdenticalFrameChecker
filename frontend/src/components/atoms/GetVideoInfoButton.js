@@ -6,7 +6,7 @@ export default function GetVideoInfoButton(props) {
   const {kind, video, setVideoinfo} = props
 
   function handleClick() {
-    Axios.get(`http://127.0.0.1:5000/get_video_information/${kind}`)
+    Axios.get(`/get_video_information/${kind}`)
     .then(function(response) {
       console.log(response)
       setVideoinfo(response.data.information)

@@ -15,11 +15,21 @@ export default function GivenVideoPlayer(props) {
 
   return (
     <div className='space-y-2 bg-gray-100'>
-      <Alert security='info'>{alerttext}</Alert>
-      <FileUploader kind={kind} setVideo={setVideo}/>
-      <VideoPlayer video={video} videoRef={videoRef}/>
-      <GetVideoInfoButton kind={kind} video={video} setVideoinfo={setVideoinfo}/>
-      <VideoInfoCard videoinfo={videoinfo}/>
+      <div>
+        <Alert security='info'>{alerttext}</Alert>
+      </div>
+      <div>
+        <FileUploader kind={kind} setVideo={setVideo}/>
+      </div>
+      <div>
+        <VideoPlayer video={video} videoRef={videoRef}/>
+      </div>
+      <div>
+        <GetVideoInfoButton kind={kind} video={video} setVideoinfo={setVideoinfo}/>
+      </div>
+      <div>
+        <VideoInfoCard videoinfo={videoinfo}/>
+      </div>
     </div>
   )
 }

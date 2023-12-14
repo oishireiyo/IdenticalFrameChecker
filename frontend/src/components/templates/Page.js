@@ -1,5 +1,5 @@
 import React from 'react'
-import CallAndSetConfig from '../organisms/CallAndSetConfig'
+import LeftSidebar from '../organisms/LeftSidebar'
 import ApplicationBar from '../organisms/ApplicationBar'
 import GivenVideoPlayer from '../organisms/GivenVideoPlayer'
 
@@ -10,7 +10,7 @@ export default function Page() {
       <div className='h-screen grid grid-cols-6 divide-x-2 divide-gray-300'>
         <div className='col-span-2'>
           <div className='m-4'>
-            <CallAndSetConfig />
+            <LeftSidebar />
           </div>
         </div>
         <div className='col-span-2'>

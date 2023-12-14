@@ -22,7 +22,7 @@ export default function FileUploader(props) {
     const formData = new FormData()
     formData.append('video', files[0])
 
-    await Axios.post(`http://127.0.0.1:5000/set_${kind}_video`, formData, {
+    await Axios.post(`/set_${kind}_video`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       }

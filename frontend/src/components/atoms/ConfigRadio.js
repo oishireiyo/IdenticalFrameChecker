@@ -10,7 +10,7 @@ export default function ConfigRadio() {
   const [config, setConfig] = React.useState('first')
 
   function handleChange(event) {
-    Axios.get(`http://127.0.0.1:5000/set_config/${event.target.value}`)
+    Axios.get(`/set_config/${event.target.value}`)
     .then(function(response) {
       console.log(response)
       setConfig(event.target.value)
@@ -24,7 +24,6 @@ export default function ConfigRadio() {
     <FormControl>
       <FormLabel>同一フレームの取得設定</FormLabel>
       <RadioGroup
-        row
         value={config}
         onChange={handleChange}
       >

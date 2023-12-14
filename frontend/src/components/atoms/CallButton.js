@@ -5,7 +5,7 @@ import Axios from 'axios'
 
 export default function CallButton() {
   function handleClick() {
-    Axios.get('http://127.0.0.1:5000/execute')
+    Axios.get('/execute')
     .then(function(response) {
       console.log(response)
     })

@@ -44,26 +44,32 @@ export default function VideoPlayer(props) {
   }, [video])
 
   return (
-    <div className=''>
-      <video
-        ref={videoRef}
-        src={videourl}
-        width="100%"
-        loop
-        onClick={handlePlayPause}
-        onLoadedMetadata={handleLoadedMetadata}
-      />
-      <PlayPauseButtons
-        file={video}
-        isPlaying={isPlaying}
-        handlePlayPause={handlePlayPause}
-      />
-      <Seekbar
-        file={video}
-        currentInSec={currentInSec}
-        handleSeekbarValue={handleSeekbarValue}
-        durationInSec={durationInSec}
-      />
+    <div className='flex-col space-y-2'>
+      <div>
+        <video
+          ref={videoRef}
+          src={videourl}
+          width="100%"
+          loop
+          onClick={handlePlayPause}
+          onLoadedMetadata={handleLoadedMetadata}
+        />
+      </div>
+      <div>
+        <PlayPauseButtons
+          file={video}
+          isPlaying={isPlaying}
+          handlePlayPause={handlePlayPause}
+        />
+      </div>
+      <div>
+        <Seekbar
+          file={video}
+          currentInSec={currentInSec}
+          handleSeekbarValue={handleSeekbarValue}
+          durationInSec={durationInSec}
+        />
+      </div>
     </div>
   )
 }
