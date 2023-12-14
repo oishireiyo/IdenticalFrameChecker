@@ -34,6 +34,7 @@ class IdenticalFramesChecker(object):
     self.source_video = None
     self.target_video = None
     self.config = config
+    self.list_source_frame_ids = []
 
   # Set attributes
   def set_source_name(self, source_name) -> None:
@@ -106,36 +107,74 @@ class IdenticalFramesChecker(object):
   def check_identical(self, source_frame: np.ndarray, target_frame: np.ndarray) -> bool:
     return np.allclose(source_frame, target_frame)
 
-  def compare_frame(self, source_frames: list[np.ndarray], target_frame: np.ndarray) -> list[int]:
+  def compare_frame(self, source_frames: list[np.ndarray], target_frame: np.ndarray, prev_first_source_frame_id: int=0) -> list[int]:
     source_frame_ids = []
     color = self.check_singularly_color(frame=target_frame)
     if color != 0:
       source_frame_ids.append(color)
       return source_frame_ids
     else:
-      for source_frame_id, source_frame in enumerate(source_frames):
-        result = self.check_identical(source_frame=source_frame, target_frame=target_frame)
-        if result:
-          if self.config == 'first':
-            source_frame_ids.append(source_frame_id)
-            break
-          if self.config == 'last':
-            source_frame_ids = []
-            source_frame_ids.append(source_frame_id)
-          if self.config == 'all':
-            source_frame_ids.append(source_frame_id)
+      result = self.check_identical(source_frames[prev_first_source_frame_id+1], target_frame=target_frame)
+      if result and self.config == 'first':
+        source_frame_ids.append(prev_first_source_frame_id+1)
+      else:
+        for source_frame_id, source_frame in enumerate(source_frames):
+          if source_frame_id == prev_first_source_frame_id+1:
+            continue
+          result = self.check_identical(source_frame=source_frame, target_frame=target_frame)
+          if result:
+            if self.config == 'first':
+              source_frame_ids.append(source_frame_id)
+              break
+            if self.config == 'last':
+              source_frame_ids = []
+              source_frame_ids.append(source_frame_id)
+            if self.config == 'all':
+              source_frame_ids.append(source_frame_id)
 
       return source_frame_ids
 
   def execute(self) -> list[int]:
-    list_source_frame_ids = []
     source_frames = self.get_all_frames(video=self.source_video)
+    prev_first_source_frame_id = None
     for i in tqdm.tqdm(range(int(self.target_video.get(cv2.CAP_PROP_FRAME_COUNT)))):
+    # for i in tqdm.tqdm(range(0, 10)):
       target_frame = self.get_single_frame(video=self.target_video, iframe=i)
-      source_frame_ids = self.compare_frame(source_frames=source_frames, target_frame=target_frame)
-      list_source_frame_ids.append(source_frame_ids)
+      source_frame_ids = self.compare_frame(
+        source_frames=source_frames,
+        target_frame=target_frame,
+        prev_first_source_frame_id=0 if prev_first_source_frame_id is None else prev_first_source_frame_id)
+      prev_first_source_frame_id = source_frame_ids[-1] if len(source_frame_ids) > 0 else None
+      self.list_source_frame_ids.append(source_frame_ids)
 
-    return list_source_frame_ids
+    return self.list_source_frame_ids
+
+  def generate_output_file(self, output_file_name='../output/output_file_name.py') -> None:
+    # 対して重要でない部分
+    str =  f'# This is auto-generated file by {__file__}.\n'
+    str += f'# Return frame numbers of the source video that match the target video frame.\n'
+    str += f'# It is supposed to be used for the purpose of detecting differences between 2 different videos in automatic subtitle generation application.\n'
+    str += f'# Following lines show the source / target video information.\n'
+    str += f'# \n'
+    str += f'# source video:\n'
+    source_video_info = self.get_video_information(videokind='source')
+    for key in source_video_info:
+      str += f'#   {key}: {source_video_info[key]}\n'
+    str += f'# target video:\n'
+    target_video_info = self.get_video_information(videokind='target')
+    for key in target_video_info:
+      str += f'#   {key}: {target_video_info[key]}\n'
+
+    # 重要な部分
+    str += '\nframes = {\n'
+    for tframe, sframes in enumerate(self.list_source_frame_ids):
+      str += f'  {tframe}: {sframes},\n'
+    str += '}\n'
+
+    # Dump
+    os.makedirs('/'.join(output_file_name.split('/')[:-1]), exist_ok=True)
+    with open(output_file_name, 'w') as f:
+      f.write(str)
 
   def release_all(self, videos: list):
     self.source_video.release()
@@ -153,9 +192,8 @@ if __name__ == '__main__':
   obj.set_source_video()
   obj.set_target_video()
   obj.set_config(config='first')
-  ids = obj.execute()
-
-  print(ids)
+  _ = obj.execute()
+  obj.generate_output_file()
 
   end_time = time.time()
   logger.info('Duration: %.3f' % (end_time - start_time))
