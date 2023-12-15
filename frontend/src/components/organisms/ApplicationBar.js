@@ -8,7 +8,7 @@ export default function ApplicationBar() {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h5">
-          Identical video frame checker
+          Time Code Coincident
         </Typography>
       </Toolbar>
     </AppBar>
