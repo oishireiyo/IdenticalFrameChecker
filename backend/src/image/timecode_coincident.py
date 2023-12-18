@@ -53,7 +53,7 @@ class TimeCodeCoincident(object):
     self.config = config
 
   # Get video information as dict
-  def get_video_information(self, videokind: str):
+  def get_video_information(self, videokind: str) -> dict[str, int]:
     video = self.source_video if videokind == 'source' else self.target_video
     return {
       'nframes': video.get(cv2.CAP_PROP_FRAME_COUNT),
@@ -62,7 +62,7 @@ class TimeCodeCoincident(object):
       'fps': video.get(cv2.CAP_PROP_FPS),
     }
 
-  def get_output_file_name(self):
+  def get_output_file_name(self) -> str:
     return self.output_file_name
 
   # Get some frames
@@ -164,14 +164,11 @@ class TimeCodeCoincident(object):
     str += f'# It is supposed to be used for the purpose of detecting differences between 2 different videos in automatic subtitle generation application.\n'
     str += f'# Following lines show the source / target video information.\n'
     str += f'# \n'
-    str += f'# source video:\n'
-    source_video_info = self.get_video_information(videokind='source')
-    for key in source_video_info:
-      str += f'#   {key}: {source_video_info[key]}\n'
-    str += f'# target video:\n'
-    target_video_info = self.get_video_information(videokind='target')
-    for key in target_video_info:
-      str += f'#   {key}: {target_video_info[key]}\n'
+    for videokind in ['source', 'target']:
+      str += f'# {videokind} video:\n'
+      video_info = self.get_video_information(videokind=videokind)
+      for key in video_info:
+        str += f'#   {key}: {video_info[key]}\n'
 
     # 重要な部分
     str += '\nframes = {\n'
@@ -198,7 +195,7 @@ if __name__ == '__main__':
   source_name = '../samples/JB-BAN-2304-0139_endroll.mp4'
   target_name = '../samples/JB-BAN-2304-0139_midroll.mp4'
 
-  obj = IdenticalFramesChecker()
+  obj = TimeCodeCoincident()
   obj.set_source_name(source_name=source_name)
   obj.set_target_name(target_name=target_name)
   obj.set_source_video()
