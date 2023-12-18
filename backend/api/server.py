@@ -22,8 +22,10 @@ logger.addHandler(stream_handler)
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../src/')
 from timecode_coincident import TimeCodeCoincident
+from get_frams_diff import GetFramesDiff
 
 coincidenter = TimeCodeCoincident()
+diff_parser = GetFramesDiff()
 
 def axios_video_to_videocapture(video_file, temp_filename='temp_video.mp4'):
   # Convert the uploaded file to a cv2 video capture
@@ -47,6 +49,7 @@ def index():
 def set_source_name():
   arguments = request.get_json()
   coincidenter.set_source_name(source_name=arguments['source_name'])
+  diff_parser.set_source_name(source_name=arguments['source_name'])
   response = {'result': True}
 
   return make_response(jsonify(response))
@@ -55,6 +58,7 @@ def set_source_name():
 def set_target_name():
   arguments = request.get_json()
   coincidenter.set_target_name(target_name=arguments['target_name'])
+  diff_parser.set_target_name(target_name=arguments['target_name'])
   response = {'result': True}
 
   return make_response(jsonify(response))
@@ -66,6 +70,7 @@ def set_source_video():
     temp_filename='temp_source_video.mp4',
   )
   coincidenter.set_source_video(source_video=source_video)
+  diff_parser.set_source_video(source_video=source_video)
   response = {'result': True}
 
   return make_response(jsonify(response))
@@ -77,6 +82,7 @@ def set_target_video():
     temp_filename='temp_target_video.mp4',
   )
   coincidenter.set_target_video(target_video=target_video)
+  diff_parser.set_target_video(target_video=target_video)
   response = {'result': True}
 
   return make_response(jsonify(response))
@@ -116,6 +122,18 @@ def get_generated_output_file():
   filename = os.path.basename(filepath)
 
   return send_file(filepath, as_attachment=True, download_name=filename, mimetype='text/plain')
+
+@app.route('/get_frames_diff', methods=['POST'])
+def get_frames_diff():
+  arguments = request.get_json()
+  b64_frame = diff_parser.generate_diff_image(
+    source_iframe=arguments['sourceFrameID'],
+    target_iframe=arguments['targetFrameID'],
+    as_b64=True,
+  )
+  response = {'result': True, 'b64_frame': b64_frame}
+
+  return make_response(jsonify(response))
 
 if __name__ == '__main__':
   app.debug = True

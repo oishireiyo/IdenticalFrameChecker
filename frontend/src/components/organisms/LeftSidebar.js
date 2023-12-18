@@ -1,13 +1,13 @@
-import React from "react"
-import ConfigRadio from "../atoms/ConfigRadio"
-import CallButton from "../atoms/CallButton"
-import DownloadFile from "../molecules/DownloadFile"
-import Alert from "@mui/material/Alert"
+import React from 'react';
+import ConfigRadio from '../atoms/ConfigRadio';
+import CallButton from '../atoms/CallButton';
+import DownloadFile from '../molecules/DownloadFile';
+import Alert from '@mui/material/Alert';
 
 export default function LeftSidebar(props) {
-  const {sourceVideo, targetVideo} = props
+  const { sourceVideo, targetVideo } = props;
 
-  const [done, setDone] = React.useState(false)
+  const [done, setDone] = React.useState(false);
 
   return (
     <div className="flex-col space-y-4">
@@ -25,8 +25,8 @@ export default function LeftSidebar(props) {
         />
       </div>
       <div>
-        <DownloadFile done={done}/>
+        <DownloadFile done={done} />
       </div>
     </div>
-  )
+  );
 }

@@ -15,6 +15,7 @@ logger.addHandler(stream_handler)
 # Advanced modules
 import numpy as np
 import cv2
+import base64
 
 class GetFramesDiff(object):
   '''
@@ -38,15 +39,20 @@ class GetFramesDiff(object):
   def set_target_video(self, target_video=None) -> None:
     self.target_video = target_video if target_video else cv2.VideoCapture(self.target_name)
 
-  def generate_diff_image(self, source_iframe: int, target_iframe: int, output_file_name: str='../output/diff_*s-*t.png') -> None:
-    self.source_video.set(cv2.CAP_PROP_POS_FRAMES, source_iframe)
-    self.target_video.set(cv2.CAP_PROP_POS_FRAMES, target_iframe)
+  def generate_diff_image(self, source_iframe: int, target_iframe: int, as_b64: bool=False, output_file_name: str='../output/diff_*s-*t.png') -> None:
+    self.source_video.set(cv2.CAP_PROP_POS_FRAMES, int(source_iframe))
+    self.target_video.set(cv2.CAP_PROP_POS_FRAMES, int(target_iframe))
 
     _s, source_frame = self.source_video.read()
     _t, target_frame = self.target_video.read()
 
     diff_frame = source_frame - target_frame
-    cv2.imwrite(output_file_name.replace('*s', str(source_iframe)).replace('*t', str(target_iframe)), diff_frame)
+    if as_b64:
+      _, frame_encoded = cv2.imencode('.jpg', diff_frame)
+      b64_frame = base64.b64encode(frame_encoded.tobytes()).decode('utf-8')
+      return b64_frame
+    else:
+      cv2.imwrite(output_file_name.replace('*s', str(source_iframe)).replace('*t', str(target_iframe)), diff_frame)
 
 if __name__ == '__main__':
   start_time = time.time()
