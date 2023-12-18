@@ -21,8 +21,8 @@ stream_handler.setFormatter(handler_format)
 logger.addHandler(stream_handler)
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../src/')
-from timecode_coincident import TimeCodeCoincident
-from get_frams_diff import GetFramesDiff
+from image.timecode_coincident import TimeCodeCoincident
+from image.get_frams_diff import GetFramesDiff
 
 coincidenter = TimeCodeCoincident()
 diff_parser = GetFramesDiff()
