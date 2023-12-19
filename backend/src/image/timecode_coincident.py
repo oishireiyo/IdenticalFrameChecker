@@ -34,7 +34,7 @@ class TimeCodeCoincident(object):
     self.target_video = None
     self.config = config
     self.list_source_frame_ids = []
-    self.output_file_name = '../output/output_file_name.py'
+    self.output_file_name = '../outputs/output_file_name.py'
 
   # Set attributes
   def set_source_name(self, source_name) -> None:

@@ -39,7 +39,7 @@ class GetFramesDiff(object):
   def set_target_video(self, target_video=None) -> None:
     self.target_video = target_video if target_video else cv2.VideoCapture(self.target_name)
 
-  def generate_diff_image(self, source_iframe: int, target_iframe: int, as_b64: bool=False, output_file_name: str='../../outputs/diff_*s-*t.png') -> None:
+  def generate_diff_image(self, source_iframe: int, target_iframe: int, as_b64: bool=False, output_file_name: str='diff_*s-*t.png') -> None:
     self.source_video.set(cv2.CAP_PROP_POS_FRAMES, int(source_iframe))
     self.target_video.set(cv2.CAP_PROP_POS_FRAMES, int(target_iframe))
 
@@ -52,17 +52,19 @@ class GetFramesDiff(object):
       b64_frame = base64.b64encode(frame_encoded.tobytes()).decode('utf-8')
       return b64_frame
     else:
+      cv2.imwrite('source_%d.png' % (source_iframe), source_frame)
+      cv2.imwrite('target_%d.png' % (target_iframe), target_frame)
       cv2.imwrite(output_file_name.replace('*s', str(source_iframe)).replace('*t', str(target_iframe)), diff_frame)
 
 if __name__ == '__main__':
   start_time = time.time()
 
-  source_name = '../../samples/JB-BAN-2304-0139_endroll.mp4'
-  target_name = '../../outputs/JB-BAN-2304-0139_endroll.mp4'
+  source_name = '../../outputs/JB-BAN-2304-0139_endroll_1.mp4'
+  target_name = '../../outputs/JB-BAN-2304-0139_endroll_2.mp4'
 
   obj = GetFramesDiff()
   obj.set_source_name(source_name=source_name)
   obj.set_target_name(target_name=target_name)
   obj.set_source_video()
   obj.set_target_video()
-  obj.generate_diff_image(source_iframe=1, target_iframe=1)
+  obj.generate_diff_image(source_iframe=460, target_iframe=490)
