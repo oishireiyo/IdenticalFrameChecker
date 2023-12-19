@@ -147,8 +147,8 @@ class TimeCodeCoincident(object):
 if __name__ == '__main__':
   start_time = time.time()
 
-  source_name = '../assets/JB-BAN-2304-0139_endroll.mp4'
-  target_name = '../assets/JB-BAN-2304-0139_endroll.mp4'
+  source_name = '../../assets/JB-BAN-2304-0139_endroll_1.mp4'
+  target_name = '../../assets/JB-BAN-2304-0139_endroll_2.mp4'
 
   obj = TimeCodeCoincident()
   obj.set_source_name(source_name=source_name)
