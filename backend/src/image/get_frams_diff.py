@@ -39,7 +39,7 @@ class GetFramesDiff(object):
   def set_target_video(self, target_video=None) -> None:
     self.target_video = target_video if target_video else cv2.VideoCapture(self.target_name)
 
-  def generate_diff_image(self, source_iframe: int, target_iframe: int, as_b64: bool=False, output_file_name: str='../output/diff_*s-*t.png') -> None:
+  def generate_diff_image(self, source_iframe: int, target_iframe: int, as_b64: bool=False, output_file_name: str='../../outputs/diff_*s-*t.png') -> None:
     self.source_video.set(cv2.CAP_PROP_POS_FRAMES, int(source_iframe))
     self.target_video.set(cv2.CAP_PROP_POS_FRAMES, int(target_iframe))
 
@@ -57,12 +57,12 @@ class GetFramesDiff(object):
 if __name__ == '__main__':
   start_time = time.time()
 
-  source_name = '../samples/JB-BAN-2304-0139_endroll.mp4'
-  target_name = '../samples/JB-BAN-2304-0139_midroll.mp4'
+  source_name = '../../samples/JB-BAN-2304-0139_endroll.mp4'
+  target_name = '../../outputs/JB-BAN-2304-0139_endroll.mp4'
 
   obj = GetFramesDiff()
   obj.set_source_name(source_name=source_name)
   obj.set_target_name(target_name=target_name)
   obj.set_source_video()
   obj.set_target_video()
-  obj.generate_diff_image(source_iframe=182, target_iframe=336)
+  obj.generate_diff_image(source_iframe=1, target_iframe=1)
