@@ -25,13 +25,14 @@ class AddSingularColorFrames():
     height = int(self.input_video.get(cv2.CAP_PROP_FRAME_HEIGHT))
     self.size = (width, height)
     self.fps = self.input_video.get(cv2.CAP_PROP_FPS)
+    self.color_size = (height, width, 3) # 縦横の順番が逆
 
     # 出力動画
     fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
-    self.output_video = cv2.VideoWriter(output_video_name, fourcc, self.fps, self.size)
+    self.output_video = cv2.VideoWriter(output_video_name, fourcc, self.fps, self.size, True)
 
   def get_black_frame(self) -> np.ndarray:
-    black_frame = np.zeros(self.size, np.uint8)
+    black_frame = np.zeros(self.color_size, np.uint8)
     return black_frame
 
   def get_white_frame(self) -> np.ndarray:
@@ -42,7 +43,6 @@ class AddSingularColorFrames():
     black_frame = self.get_black_frame()
     for _ in range(black_length):
       self.output_video.write(black_frame)
-
 
   def add_white_frames(self, white_length: int):
     white_frame = self.get_white_frame()
@@ -82,11 +82,11 @@ if __name__ == '__main__':
 
   obj = AddSingularColorFrames(
     input_video_name='../samples/JB-BAN-2304-0139_endroll.mp4',
-    output_video_name='../outputs/JB-BAN-2304-0139_endroll.mp4'
+    output_video_name='../outputs/JB-BAN-2304-0139_endroll_1.mp4'
   )
   obj.add_frames(
-    black_interval=[100, 30],
-    white_interval=None,
+    black_interval=[200, 30],
+    white_interval=[400, 30],
   )
   obj.release_all()
 

@@ -155,7 +155,7 @@ class TimeCodeCoincident(object):
 
     return self.list_source_frame_ids
 
-  def generate_output_file(self, as_str: bool=False, output_file_name: str='../output/output_file_name.py') -> Union[str, None]:
+  def generate_output_file(self, as_str: bool=False, output_file_name: str='../../output/output_file_name.py') -> Union[str, None]:
     self.output_file_name = output_file_name
 
     # 対して重要でない部分
@@ -192,8 +192,8 @@ class TimeCodeCoincident(object):
 if __name__ == '__main__':
   start_time = time.time()
 
-  source_name = '../../samples/JB-BAN-2304-0139_endroll.mp4'
-  target_name = '../../outputs/JB-BAN-2304-0139_endroll.mp4'
+  source_name = '../../outputs/JB-BAN-2304-0139_endroll_1.mp4'
+  target_name = '../../outputs/JB-BAN-2304-0139_endroll_2.mp4'
 
   obj = TimeCodeCoincident()
   obj.set_source_name(source_name=source_name)
@@ -202,7 +202,7 @@ if __name__ == '__main__':
   obj.set_target_video()
   obj.set_config(config='first')
   _ = obj.execute()
-  # obj.generate_output_file()
+  obj.generate_output_file()
 
   end_time = time.time()
   logger.info('Duration: %.3f' % (end_time - start_time))
